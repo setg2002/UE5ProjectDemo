@@ -75,3 +75,5 @@ DerivedDataCache/*
 
 # Ignoring Large assets and main map
 Content/MainMapContent/*
+Content/Megascans/*
+Content/MSPresets/*
