@@ -3,6 +3,13 @@
 	"EngineAssociation": "{E71DC768-4E4E-D0BE-9D09-57B90078ADDF}",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "GameDemo",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "Bridge",
