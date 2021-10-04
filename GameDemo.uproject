@@ -7,7 +7,15 @@
 		{
 			"Name": "GameDemo",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		},
+		{
+			"Name": "LoadingScreen",
+			"Type": "ClientOnly",
+			"LoadingPhase": "PreLoadingScreen"
 		}
 	],
 	"Plugins": [
