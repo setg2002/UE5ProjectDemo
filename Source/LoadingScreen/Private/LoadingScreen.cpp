@@ -120,7 +120,7 @@ public:
 							.Justification(ETextJustify::Right)
 							.ColorAndOpacity(FLinearColor::White)
 							.Font(TTF_FONT("cour", 14))
-							.Text(FText::FromString("Press any button to continue"))
+							.Text(FText::FromString("Press any key to continue"))
 							.Visibility(this, &SLoadingScreen::NotGetLoadIndicatorVisibility)
 						]
 
