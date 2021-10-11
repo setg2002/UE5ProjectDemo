@@ -2,13 +2,26 @@
 
 
 #include "DemoPlayerController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 
 ADemoPlayerController::ADemoPlayerController()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bTickEvenWhenPaused = true;
+
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
+}
+
+void ADemoPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (PauseWidgetClass)
+		PauseWidget = CreateWidget<UUserWidget, APlayerController>(this, PauseWidgetClass);
 }
 
 void ADemoPlayerController::SetupInputComponent()
@@ -29,6 +42,9 @@ void ADemoPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("TurnRate", this, &ADemoPlayerController::TurnAtRate);
 	InputComponent->BindAxis("LookUp", this, &APlayerController::AddPitchInput);
 	InputComponent->BindAxis("LookUpRate", this, &ADemoPlayerController::LookUpAtRate);
+
+	// Bind pause event
+	InputComponent->BindAction("Pause", IE_Pressed, this, &ADemoPlayerController::TogglePause).bExecuteWhenPaused = true;
 }
 
 
@@ -60,4 +76,30 @@ void ADemoPlayerController::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void ADemoPlayerController::TogglePause_Implementation()
+{
+	bool bPause = !UGameplayStatics::IsGamePaused(GetWorld());
+	
+	UGameplayStatics::SetGamePaused(GetWorld(), bPause);
+	if (bPause)
+	{
+		FInputModeGameAndUI InputMode;
+		if (PauseWidget)
+		{
+			InputMode.SetWidgetToFocus(PauseWidget->TakeWidget());
+			PauseWidget->AddToViewport(1);
+		}
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(InputMode);
+	}
+	else
+	{
+		FInputModeGameOnly InputMode;
+		SetInputMode(InputMode);
+		if (PauseWidget)
+			PauseWidget->RemoveFromParent();
+	}
+	SetShowMouseCursor(bPause);
 }
