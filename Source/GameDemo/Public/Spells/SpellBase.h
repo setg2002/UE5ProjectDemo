@@ -78,6 +78,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndSpellCast();
 
+	// Returns the power of the charged spell normalized to a range between 0-1
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetChargePower() const;
+
 private:
 	// Logic for deciding whether to actually fire the spell with Fire()
 	void TryFire();
@@ -127,6 +131,9 @@ private:
 
 	// True when the player is holding down the cast input
 	bool bCasting;
+
+	// True when the charge has reached MaxChargeTime
+	bool bFullCharge;
 
 	// Helper methods for creating the visual components
 

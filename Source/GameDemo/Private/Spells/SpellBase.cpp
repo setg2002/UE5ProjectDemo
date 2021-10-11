@@ -99,7 +99,14 @@ void USpellBase::EndSpellCast()
 	{
 		TryFire();
 		TimerManager.ClearTimer(ChargeTimer);
+		bFullCharge = false;
 	}
+}
+
+float USpellBase::GetChargePower() const
+{
+	float ElapsedTime = TimerManager.IsTimerActive(ChargeTimer) ? TimerManager.GetTimerElapsed(ChargeTimer) : 0.f;
+	return bFullCharge ? 1.f : ElapsedTime / MaxChargeTime;
 }
 
 void USpellBase::TryCharge()
@@ -124,6 +131,7 @@ void USpellBase::Charge_Implementation()
 
 void USpellBase::ChargeFull_Implementation()
 { 
+	bFullCharge = true;
 	UE_LOG(LogSpell, Display, TEXT("Spell (%s) max charge reached"), *this->GetFName().ToString());
 	if (bDoesRepeat) TryFire(); 
 }
