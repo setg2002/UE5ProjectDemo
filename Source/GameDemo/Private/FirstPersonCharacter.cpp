@@ -1,7 +1,7 @@
 // Copyright Soren Gilbertson & Brady Herzog
 
 #include "FirstPersonCharacter.h"
-//#include "Projectile.h"
+#include "Spells/SpellBase.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -75,8 +75,9 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	// Bind fire event
-	InputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonCharacter::Fire);
+	// Bind cast spell event
+	InputComponent->BindAction("Fire", IE_Pressed, EquippedSpell, &USpellBase::StartSpellCast);
+	InputComponent->BindAction("Fire", IE_Released, EquippedSpell, &USpellBase::EndSpellCast);
 }
 
 void AFirstPersonCharacter::Fire()

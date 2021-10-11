@@ -12,6 +12,7 @@ class USceneComponent;
 class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
+class USpellBase;
 
 UCLASS(config = Game)
 class AFirstPersonCharacter : public ACharacter
@@ -59,6 +60,9 @@ protected:
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	USpellBase* EquippedSpell;
 
 public:
 	/** Fires a projectile. */
