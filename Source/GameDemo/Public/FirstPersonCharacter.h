@@ -11,8 +11,6 @@ class UInputComponent;
 class USkeletalMeshComponent;
 class USceneComponent;
 class UCameraComponent;
-class UAnimMontage;
-class USoundBase;
 class USpellBase;
 
 UCLASS(config = Game)
@@ -25,13 +23,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
-	/** Gun mesh: 1st person view (seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USkeletalMeshComponent* FP_Gun;
-
-	/** Location on gun mesh where projectiles should spawn. */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USceneComponent* FP_MuzzleLocation;
+	/** Location on the actor where spell components are created. */
+	UPROPERTY(VisibleDefaultsOnly, Category = Spells)
+	USceneComponent* FP_SpellLocation;
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -48,29 +42,13 @@ protected:
 	// Called when the character is possessed. Used to set the OnAmmoChanged delegate
 	virtual void Restart() override;
 
-	/** Gun muzzle's offset from the characters location */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	FVector GunOffset;
-
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AActor> ProjectileClass;
-
-	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	USoundBase* FireSound;
-
-	/** AnimMontage to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	UAnimMontage* FireAnimation;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	USpellBase* EquippedSpell;
-
 public:
 	/** Fires a projectile. */
 	UFUNCTION()
 	void Fire();
+
+	UFUNCTION()
+	void EndFire();
 
 protected:
 	// APawn interface
@@ -99,4 +77,17 @@ protected:
 
 	// The current interactable object the player can interact with. Can be null
 	TScriptInterface<class IInteractable> Interactable;
+
+
+// ===== Spell =====
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetNewSpell(UClass* NewSpellClass);
+
+	UFUNCTION(BlueprintCallable)
+	USpellBase* GetEquippedSpell() const { return EquippedSpell; }
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = Gameplay)
+	USpellBase* EquippedSpell;
 };
