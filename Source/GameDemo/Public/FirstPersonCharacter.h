@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interactable.h"
 #include "GameFramework/Character.h"
 #include "FirstPersonCharacter.generated.h"
 
@@ -40,7 +41,9 @@ public:
 	AFirstPersonCharacter();
 
 protected:
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
 
 	// Called when the character is possessed. Used to set the OnAmmoChanged delegate
 	virtual void Restart() override;
@@ -79,4 +82,21 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+
+// ===== Interaction =====
+public:
+	UFUNCTION(BlueprintCallable)
+	void Interact() { if (CanInteract()) Interactable->Execute_Interact(Interactable.GetObject()); }
+
+	// The distance in unreal units that the interaction line-trace checks from the player's camera 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float InteractionDistance = 100.f;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool CanInteract() const { return Interactable.GetObject() ? Interactable->Execute_GetCanInteract(Interactable.GetObject()) : false; }
+
+	// The current interactable object the player can interact with. Can be null
+	TScriptInterface<class IInteractable> Interactable;
 };

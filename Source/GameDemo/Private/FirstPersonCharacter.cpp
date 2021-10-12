@@ -57,6 +57,27 @@ void AFirstPersonCharacter::BeginPlay()
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 }
 
+void AFirstPersonCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	FHitResult OutHit;
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
+	FVector End = ((ForwardVector * InteractionDistance) + Start);
+	FCollisionQueryParams CollisionParams;
+
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams))
+	{
+		if (OutHit.GetActor()->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+			Interactable = OutHit.GetActor();
+		else
+			Interactable = nullptr;
+	}
+	else
+		Interactable = nullptr;
+}
+
 void AFirstPersonCharacter::Restart()
 {
 	Super::Restart();
@@ -78,6 +99,9 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// Bind cast spell event
 	InputComponent->BindAction("Fire", IE_Pressed, EquippedSpell, &USpellBase::StartSpellCast);
 	InputComponent->BindAction("Fire", IE_Released, EquippedSpell, &USpellBase::EndSpellCast);
+
+	// Bind interaction event
+	InputComponent->BindAction("Interact", IE_Pressed, this, &AFirstPersonCharacter::Interact);
 }
 
 void AFirstPersonCharacter::Fire()
