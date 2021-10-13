@@ -71,6 +71,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float InteractionDistance = 100.f;
 
+	FCollisionQueryParams InteractionCollisionParams;
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool CanInteract() const { return Interactable.GetObject() ? Interactable->Execute_GetCanInteract(Interactable.GetObject()) : false; }

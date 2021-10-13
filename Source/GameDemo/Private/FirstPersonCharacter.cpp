@@ -33,8 +33,12 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
+	// Create the spell location
 	FP_SpellLocation = CreateDefaultSubobject<USceneComponent>(TEXT("SpellLocation"));
-	FP_SpellLocation->SetupAttachment(RootComponent);
+	FP_SpellLocation->SetupAttachment(FirstPersonCameraComponent);
+
+	// Setup InteractionCollisionParams
+	//InteractionCollisionParams
 }
 
 void AFirstPersonCharacter::BeginPlay()
@@ -51,9 +55,8 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
 	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
 	FVector End = ((ForwardVector * InteractionDistance) + Start);
-	FCollisionQueryParams CollisionParams;
 
-	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams))
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, COLLISION_INTERACTION, InteractionCollisionParams))
 	{
 		if (OutHit.GetActor()->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 			Interactable = OutHit.GetActor();
@@ -105,7 +108,7 @@ void AFirstPersonCharacter::EndFire()
 void AFirstPersonCharacter::SetNewSpell(UClass* NewSpellClass)
 {
 	// Only replace the spell if the new one is different
-	if (NewSpellClass != EquippedSpell->GetClass())
+	if (!EquippedSpell || NewSpellClass != EquippedSpell->GetClass())
 	{
 		// First delete the old spell component
 		if (EquippedSpell)
