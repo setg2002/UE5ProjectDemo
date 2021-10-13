@@ -51,6 +51,8 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	// Find interactable actor in front of the player's camera
 	FHitResult OutHit;
 	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
 	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
@@ -65,12 +67,6 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 	}
 	else
 		Interactable = nullptr;
-}
-
-void AFirstPersonCharacter::Restart()
-{
-	Super::Restart();
-
 }
 
 //////////////////////////////////////////////////////////////////////////

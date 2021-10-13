@@ -22,7 +22,7 @@ class GAMEDEMO_API IInteractable
 
 public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void Interact();
+	void Interact(class AFirstPersonCharacter* Interactor);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	bool GetCanInteract();

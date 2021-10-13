@@ -39,11 +39,7 @@ protected:
 
 	virtual void Tick(float DeltaTime) override;
 
-	// Called when the character is possessed. Used to set the OnAmmoChanged delegate
-	virtual void Restart() override;
-
 public:
-	/** Fires a projectile. */
 	UFUNCTION()
 	void Fire();
 
@@ -65,7 +61,7 @@ public:
 // ===== Interaction =====
 public:
 	UFUNCTION(BlueprintCallable)
-	void Interact() { if (CanInteract()) Interactable->Execute_Interact(Interactable.GetObject()); }
+	void Interact() { if (CanInteract()) Interactable->Execute_Interact(Interactable.GetObject(), this); }
 
 	// The distance in unreal units that the interaction line-trace checks from the player's camera 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
