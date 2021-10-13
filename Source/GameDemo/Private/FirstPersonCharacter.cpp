@@ -104,19 +104,21 @@ void AFirstPersonCharacter::EndFire()
 
 void AFirstPersonCharacter::SetNewSpell(UClass* NewSpellClass)
 {
-	// First delete the old spell component
-	if (EquippedSpell)
+	// Only replace the spell if the new one is different
+	if (NewSpellClass != EquippedSpell->GetClass())
 	{
-		//EquippedSpell->UnregisterComponent();
-		EquippedSpell->ConditionalBeginDestroy();
-		EquippedSpell->DestroyComponent();
+		// First delete the old spell component
+		if (EquippedSpell)
+		{
+			EquippedSpell->ConditionalBeginDestroy();
+			EquippedSpell->DestroyComponent();
+		}
+
+		// Make the new spell component from the given class
+		EquippedSpell = NewObject<USpellBase>(this, NewSpellClass, NewSpellClass->GetFName(), RF_Public);
+		EquippedSpell->AttachToComponent(FP_SpellLocation, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		EquippedSpell->SetRelativeTransform(FTransform(FRotator(0), FVector(0), FVector::OneVector));
+		EquippedSpell->OnComponentCreated();
 	}
 
-	FName SpellName = FName(NewSpellClass->GetFName().ToString() + FString::FromInt(FMath::Rand()));
-
-	// Make the new spell component from the given class
-	EquippedSpell = NewObject<USpellBase>(this, NewSpellClass, SpellName, RF_Public);
-	EquippedSpell->AttachToComponent(FP_SpellLocation, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	EquippedSpell->SetRelativeTransform(FTransform(FRotator(0), FVector(0), FVector::OneVector));
-	EquippedSpell->OnComponentCreated();
 }
