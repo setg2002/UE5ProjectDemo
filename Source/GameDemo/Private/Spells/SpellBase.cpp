@@ -69,6 +69,16 @@ void USpellBase::BeginDestroy()
 	Super::BeginDestroy();
 }
 
+void USpellBase::Destroy()
+{
+	for (USceneComponent* child : GetAttachChildren())
+	{
+		child->DestroyComponent();
+	}
+
+	DestroyComponent();
+}
+
 // Called every frame
 /*void USpellBase::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

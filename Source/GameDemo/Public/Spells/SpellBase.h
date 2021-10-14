@@ -82,6 +82,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetChargePower() const;
 
+	UFUNCTION(BlueprintCallable)
+	void Destroy();
+
 private:
 	// Logic for deciding whether to actually fire the spell with Fire()
 	void TryFire();

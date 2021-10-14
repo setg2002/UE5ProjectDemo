@@ -108,10 +108,7 @@ void AFirstPersonCharacter::SetNewSpell(UClass* NewSpellClass)
 	{
 		// First delete the old spell component
 		if (EquippedSpell)
-		{
-			EquippedSpell->ConditionalBeginDestroy();
-			EquippedSpell->DestroyComponent();
-		}
+			EquippedSpell->Destroy();
 
 		// Make the new spell component from the given class
 		EquippedSpell = NewObject<USpellBase>(this, NewSpellClass, NewSpellClass->GetFName(), RF_Public);
