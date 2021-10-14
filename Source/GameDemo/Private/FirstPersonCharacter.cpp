@@ -54,9 +54,9 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 
 	// Find interactable actor in front of the player's camera
 	FHitResult OutHit;
-	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
-	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
-	FVector End = ((ForwardVector * InteractionDistance) + Start);
+	const FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	const FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
+	const FVector End = ((ForwardVector * InteractionDistance) + Start);
 
 	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, COLLISION_INTERACTION, InteractionCollisionParams))
 	{

@@ -3,6 +3,7 @@
 
 #include "DemoGameInstance.h"
 #include "LoadingScreen.h"
+#include "InputModeDetector.h"
 #include "Framework/Application/SlateApplication.h"
 
 
@@ -35,14 +36,4 @@ void UDemoGameInstance::StopLoadingScreen()
 {
 	ILoadingScreenModule& LoadingScreenModule = ILoadingScreenModule::Get();
 	LoadingScreenModule.StopInGameLoadingScreen();
-}
-
-EInputMode UDemoGameInstance::GetLastInputModeUsed() 
-{ 
-	return InputDetector->GetLastInputMode();
-}
-
-bool UDemoGameInstance::LastInputWasGamePad()
-{
-	return GetLastInputModeUsed() == EInputMode::Gamepad;
 }

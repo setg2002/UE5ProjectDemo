@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputModeDetector.h"
 #include "Engine/GameInstance.h"
 #include "DemoGameInstance.generated.h"
 
@@ -34,9 +33,5 @@ protected:
 	static TSharedPtr<FInputModeDetector> InputDetector;
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static EInputMode GetLastInputModeUsed();
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static bool LastInputWasGamePad();
+	TSharedPtr<FInputModeDetector> GetInputDetector() const { return InputDetector; }
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputModeDetector.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "InputFunctionLibrary.generated.h"
 
@@ -26,4 +27,12 @@ public:
 	// Returns whether or not the key event is assigned to the given action name
 	UFUNCTION(BlueprintCallable, meta = (ExpandEnumAsExecs = "Branches"))
 	static void IsKeyInputAction(const FKeyEvent& InKeyEvent, FName InActionName, EInputAction& Branches);
+
+	// Returns the last input mode the player used
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static EInputMode GetLastInputModeUsed(const UObject* WorldContextObject);
+
+	// Returns true if the player's last input was from a gamepad, false otherwise.
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static bool LastInputWasGamePad(const UObject* WorldContextObject);
 };

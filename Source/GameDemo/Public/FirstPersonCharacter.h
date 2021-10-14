@@ -52,9 +52,9 @@ protected:
 	// End of APawn interface
 
 public:
-	/** Returns Mesh1P subobject **/
+	/** Returns Mesh1P sub-object **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
+	/** Returns FirstPersonCameraComponent sub-object **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 
