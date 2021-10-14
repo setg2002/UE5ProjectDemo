@@ -7,6 +7,8 @@
 #include "DemoGameInstance.generated.h"
 
 
+class FInputModeDetector;
+
 /**
  * 
  */
