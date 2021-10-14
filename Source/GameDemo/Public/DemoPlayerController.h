@@ -55,7 +55,7 @@ public:
 
 protected:
 	UPROPERTY()
-	UUserWidget* PauseWidget;
+	class UPause* PauseWidget;
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

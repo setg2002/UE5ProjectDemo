@@ -2,6 +2,7 @@
 
 
 #include "DemoPlayerController.h"
+#include "Widgets/Pause.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
@@ -21,7 +22,7 @@ void ADemoPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	if (PauseWidgetClass)
-		PauseWidget = CreateWidget<UUserWidget, APlayerController>(this, PauseWidgetClass);
+		PauseWidget = CreateWidget<UPause, APlayerController>(this, PauseWidgetClass);
 }
 
 void ADemoPlayerController::SetupInputComponent()
@@ -90,6 +91,7 @@ void ADemoPlayerController::TogglePause_Implementation()
 		{
 			InputMode.SetWidgetToFocus(PauseWidget->TakeWidget());
 			PauseWidget->AddToViewport(1);
+			PauseWidget->OpenPauseScreen();
 		}
 		InputMode.SetHideCursorDuringCapture(false);
 		SetInputMode(InputMode);
@@ -99,7 +101,7 @@ void ADemoPlayerController::TogglePause_Implementation()
 		FInputModeGameOnly InputMode;
 		SetInputMode(InputMode);
 		if (PauseWidget)
-			PauseWidget->RemoveFromParent();
+			PauseWidget->ClosePauseScreen();
 	}
 	SetShowMouseCursor(bPause);
 }
