@@ -29,10 +29,10 @@ public:
 	static void IsKeyInputAction(const FKeyEvent& InKeyEvent, FName InActionName, EInputAction& Branches);
 
 	// Returns the last input mode the player used
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"))
 	static EInputMode GetLastInputModeUsed(const UObject* WorldContextObject);
 
 	// Returns true if the player's last input was from a gamepad, false otherwise.
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"))
 	static bool LastInputWasGamePad(const UObject* WorldContextObject);
 };
