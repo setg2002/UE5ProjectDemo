@@ -71,9 +71,9 @@ void USpellBase::BeginDestroy()
 
 void USpellBase::Destroy()
 {
-	for (USceneComponent* child : GetAttachChildren())
+	for (int i = 0; i <= GetAttachChildren().Num(); i++)
 	{
-		child->DestroyComponent();
+		GetAttachChildren()[0]->DestroyComponent();
 	}
 
 	DestroyComponent();
