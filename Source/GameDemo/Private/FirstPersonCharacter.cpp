@@ -2,6 +2,7 @@
 
 #include "FirstPersonCharacter.h"
 #include "Spells/SpellBase.h"
+#include "Widgets/SpellMenu.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -35,7 +36,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 
 	// Create the spell location
 	FP_SpellLocation = CreateDefaultSubobject<USceneComponent>(TEXT("SpellLocation"));
-	FP_SpellLocation->SetupAttachment(FirstPersonCameraComponent);
+	FP_SpellLocation->SetupAttachment(Mesh1P, "GripPoint");
 
 	// Setup InteractionCollisionParams
 	//InteractionCollisionParams
@@ -45,6 +46,10 @@ void AFirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (SpellMenuWidgetClass)
+		SpellMenu = CreateWidget<USpellMenu, APlayerController>(Cast<APlayerController>(Controller), SpellMenuWidgetClass);
+	else
+		UE_LOG(LogFPChar, Warning, TEXT("SpellMenuWidgetClass not set"));
 }
 
 void AFirstPersonCharacter::Tick(float DeltaTime)
@@ -87,6 +92,10 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 	// Bind interaction event
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AFirstPersonCharacter::Interact);
+
+	// Bind spell menu
+	InputComponent->BindAction("SpellMenu", IE_Pressed, this, &AFirstPersonCharacter::OpenSpellMenu);
+	InputComponent->BindAction("SpellMenu", IE_Released, this, &AFirstPersonCharacter::CloseSpellMenu);
 }
 
 void AFirstPersonCharacter::Fire()
@@ -116,5 +125,35 @@ void AFirstPersonCharacter::SetNewSpell(UClass* NewSpellClass)
 		EquippedSpell->SetRelativeTransform(FTransform(FRotator(0), FVector(0), FVector::OneVector));
 		EquippedSpell->OnComponentCreated();
 	}
-
 }
+
+
+void AFirstPersonCharacter::OpenSpellMenu()
+{
+	FInputModeGameAndUI InputMode;
+	if (SpellMenu)
+	{
+		InputMode.SetWidgetToFocus(SpellMenu->TakeWidget());
+		SpellMenu->AddToViewport(1);
+		SpellMenu->OpenMenu();
+	}
+	InputMode.SetHideCursorDuringCapture(false);
+	
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	PlayerController->SetShowMouseCursor(true);
+	PlayerController->SetIgnoreLookInput(true);
+	PlayerController->SetInputMode(InputMode);
+}
+
+void AFirstPersonCharacter::CloseSpellMenu()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	
+	if (SpellMenu)
+		SpellMenu->CloseMenu();
+	const FInputModeGameOnly InputMode;
+	PlayerController->SetShowMouseCursor(false);
+	PlayerController->SetIgnoreLookInput(false);
+	PlayerController->SetInputMode(InputMode);
+}
+

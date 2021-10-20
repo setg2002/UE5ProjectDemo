@@ -88,4 +88,21 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Gameplay)
 	USpellBase* EquippedSpell;
+
+
+// ===== Widgets =====
+protected:
+	// Reference to the spell menu widget
+	class USpellMenu* SpellMenu;
+
+public:
+	// Widget class for the spell menu
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Widgets)
+	TSubclassOf<UUserWidget> SpellMenuWidgetClass;
+
+	UFUNCTION()
+	void OpenSpellMenu();
+
+	UFUNCTION()
+	void CloseSpellMenu();
 };
