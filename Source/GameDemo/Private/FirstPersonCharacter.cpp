@@ -47,7 +47,10 @@ void AFirstPersonCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	if (SpellMenuWidgetClass)
+	{
 		SpellMenu = CreateWidget<USpellMenu, APlayerController>(Cast<APlayerController>(Controller), SpellMenuWidgetClass);
+		SpellMenu->Player = this;
+	}
 	else
 		UE_LOG(LogFPChar, Warning, TEXT("SpellMenuWidgetClass not set"));
 }
@@ -124,6 +127,8 @@ void AFirstPersonCharacter::SetNewSpell(UClass* NewSpellClass)
 		EquippedSpell->AttachToComponent(FP_SpellLocation, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		EquippedSpell->SetRelativeTransform(FTransform(FRotator(0), FVector(0), FVector::OneVector));
 		EquippedSpell->OnComponentCreated();
+
+		KnownSpells.AddUnique(NewSpellClass);
 	}
 }
 

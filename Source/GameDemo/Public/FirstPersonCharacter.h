@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Interactable.h"
 #include "GameFramework/Character.h"
+#include "Spells/SpellBase.h"
 #include "FirstPersonCharacter.generated.h"
 
 class UInputComponent;
@@ -85,14 +86,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	USpellBase* GetEquippedSpell() const { return EquippedSpell; }
 
+	UFUNCTION(BlueprintCallable)
+	TArray<TSubclassOf<USpellBase>> GetKnownSpells() const { return KnownSpells; }
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Gameplay)
 	USpellBase* EquippedSpell;
+
+	UPROPERTY(BlueprintReadOnly, Category = Gameplay)
+	TArray<TSubclassOf<USpellBase>> KnownSpells;
 
 
 // ===== Widgets =====
 protected:
 	// Reference to the spell menu widget
+	UPROPERTY()
 	class USpellMenu* SpellMenu;
 
 public:

@@ -48,6 +48,9 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* Icon;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SkeletalMesh")
 	USkeletalMesh* SkeletalMesh = nullptr;
 

@@ -15,6 +15,9 @@ class GAMEDEMO_API USpellMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadOnly)
+	class AFirstPersonCharacter* Player;
+	
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OpenMenu();
 
